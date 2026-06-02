@@ -3,9 +3,13 @@
 sudo apt update
 sudo apt install -y nodejs npm
 
-DownloadUrl=$(curl -s -u "john:titobi123" "http://159.203.7.145:8081/service/rest/v1/components?repository=npm-snapshots" | jq -r '.items[0].assets[0].downloadUrl')
+Nexus_User=$1
+Nexus_Password=$2
+Nexus_URL=$3
 
-if [ "$DownloadUrl" = "null" || "DownloadUrl" = "" ]
+DownloadUrl=$(curl -s -u "$Nexus_User:$Nexus_Password" "$Nexus_URL/service/rest/v1/components?repository=npm-snapshots" | jq -r '.items[0].assets[0].downloadUrl')
+
+if [ "$DownloadUrl" = "null" ] || [ "DownloadUrl" = "" ]
   then
     echo "error finding download url"
     exit 1
